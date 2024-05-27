@@ -6,8 +6,9 @@ class Point:
     def __repr__(self):
         return f"({self.x}, {self.y})"
 
-def determinant(xp, yp, xq, yq, xr, yr):
-    return xq * yr + xr * yp + xp * yq - xq * yp - xr * yq - xp * yr
+def determinant(xp,yp, xq,yq, xr,yr):
+    det = 1*xq*yr + 1*xr*yp + 1*xp*yq - 1*xq*yp - 1*xr*yq - 1*xp*yr
+    return det
 
 def point_on_segment(a, b, p):
     if determinant(a.x, a.y, b.x, b.y, p.x, p.y) == 0:
@@ -40,7 +41,7 @@ def do_intersect(p1, q1, p2, q2):
 def is_inside_polygon(polygon, p):
     max_x = max(polygon, key=lambda x: x.x).x
     max_y = max(polygon, key=lambda x: x.y).y
-    M = Point(max_x + 256, max_y + 256)
+    M = Point(max_x + 512, max_y + 256)
 
     count = i = 0
     n = len(polygon)
