@@ -28,6 +28,10 @@ class Point:
     def sqr_len(self):
         return self.dot(self)
 
+    def __repr__(self):
+        return f"({self.x}, {self.y})"
+
+
 def lex_comp(p1, p2):
     return (p1.x < p2.x) or (p1.x == p2.x and p1.y < p2.y)
 
@@ -67,6 +71,7 @@ def point_in_convex_polygon(point):
     if point_on_segment(seq[n - 1], Point(0, 0), point):
         return "BOUNDARY"
 
+
     if sgn(determinant(0, 0, seq[0].x, seq[0].y, point.x, point.y)) != sgn(determinant(0, 0, seq[0].x, seq[0].y, seq[n - 1].x, seq[n - 1].y)) or \
        sgn(determinant(0, 0, seq[n - 1].x, seq[n - 1].y, point.x, point.y)) != sgn(determinant(0, 0, seq[n - 1].x, seq[n - 1].y, seq[0].x, seq[0].y)):
         return "OUTSIDE"
@@ -84,6 +89,7 @@ def point_in_convex_polygon(point):
 
     if point_on_segment(seq[l], seq[l + 1], point):
         return "BOUNDARY"
+
     return "INSIDE" if point_in_triangle(seq[l], seq[l + 1], Point(0, 0), point) else "OUTSIDE"
 
 n = int(input())
@@ -102,3 +108,5 @@ prepare(P)
 
 for r in R:
     print(point_in_convex_polygon(r))
+
+# wrong pe testul 4 dar 9/10
