@@ -21,7 +21,8 @@ def is_monotone(points, axis):
             if points[i] == max_x:
                 break
 
-        points = points[min_idx:] + points[:min_idx]
+        points.append(points[0])
+        points.pop(0)
 
         for i in range(len(points)-1, max_idx, -1):
             if points[i].x > points[i-1].x:
@@ -43,7 +44,8 @@ def is_monotone(points, axis):
             if points[i] == max_y:
                 break
 
-        points = points[min_idx:] + points[:min_idx]
+        points.append(points[0])
+        points.pop(0)
 
         for i in range(len(points)-1, max_idx, -1):
             if points[i].y > points[i-1].y:
