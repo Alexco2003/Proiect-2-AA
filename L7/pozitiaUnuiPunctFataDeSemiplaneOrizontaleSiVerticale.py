@@ -1,3 +1,5 @@
+from itertools import combinations
+
 class Point:
     def __init__(self, x, y):
         self.x = x
@@ -44,15 +46,25 @@ def is_point_inside_rectangle(point, rect):
     return min_x < point.x < max_x and min_y < point.y < max_y
 
 def process_points(equations, points):
-    rect = find_interesting_rectangle(equations)
-    if rect is None:
+    min_area = float('inf')
+    best_rect = None
+
+    for r in range(1, len(equations) + 1):
+        for subset in combinations(equations, r):
+            rect = find_interesting_rectangle(subset)
+            if rect is not None:
+                area = (rect[1] - rect[0]) * (rect[3] - rect[2])
+                if area < min_area:
+                    min_area = area
+                    best_rect = rect
+
+    if best_rect is None:
         for point in points:
             print("NO")
         return
 
-    min_area = (rect[1] - rect[0]) * (rect[3] - rect[2])
     for point in points:
-        if is_point_inside_rectangle(point, rect):
+        if is_point_inside_rectangle(point, best_rect):
             print("YES")
             print(f"{min_area:.6f}")
         else:
