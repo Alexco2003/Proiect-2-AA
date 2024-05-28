@@ -46,27 +46,30 @@ def is_point_inside_rectangle(point, rect):
     return min_x < point.x < max_x and min_y < point.y < max_y
 
 def process_points(equations, points):
-    min_area = float('inf')
-    best_rect = None
-
-    for r in range(1, len(equations) + 1):
-        for subset in combinations(equations, r):
-            rect = find_interesting_rectangle(subset)
-            if rect is not None:
-                area = (rect[1] - rect[0]) * (rect[3] - rect[2])
-                if area < min_area:
-                    min_area = area
-                    best_rect = rect
-
-    if best_rect is None:
-        for point in points:
-            print("NO")
-        return
+    results = []
 
     for point in points:
-        if is_point_inside_rectangle(point, best_rect):
+        min_area = float('inf')
+        found = False
+
+        for r in range(1, len(equations) + 1):
+            for subset in combinations(equations, r):
+                rect = find_interesting_rectangle(subset)
+                if rect is not None and is_point_inside_rectangle(point, rect):
+                    area = (rect[1] - rect[0]) * (rect[3] - rect[2])
+                    if area < min_area:
+                        min_area = area
+                        found = True
+
+        if found:
+            results.append((True, min_area))
+        else:
+            results.append((False, None))
+
+    for result in results:
+        if result[0]:
             print("YES")
-            print(f"{min_area:.6f}")
+            print(f"{result[1]:.6f}")
         else:
             print("NO")
 
