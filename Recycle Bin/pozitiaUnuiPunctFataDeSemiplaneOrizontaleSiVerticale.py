@@ -17,7 +17,7 @@ class Equation:
     def __repr__(self):
         return f"{self.a}x + {self.b}y = {self.c}"
 
-def find_interesting_rectangle(equations):
+def find_interesting_rectangle(equations, point):
     min_x, max_x = float('-inf'), float('inf')
     min_y, max_y = float('-inf'), float('inf')
 
@@ -25,19 +25,21 @@ def find_interesting_rectangle(equations):
         if eq.a != 0 and eq.b == 0:
             x_value = -eq.c / eq.a
             if eq.a > 0:
-                max_x = min(max_x, x_value)
+                if point.x < x_value:
+                    max_x = min(max_x, x_value)
             else:
-                min_x = max(min_x, x_value)
+                if point.x > x_value:
+                    min_x = max(min_x, x_value)
         elif eq.a == 0 and eq.b != 0:
             y_value = -eq.c / eq.b
             if eq.b > 0:
-                max_y = min(max_y, y_value)
+                if point.y < y_value:
+                    max_y = min(max_y, y_value)
             else:
-                min_y = max(min_y, y_value)
+                if point.y > y_value:
+                    min_y = max(min_y, y_value)
 
-    if min_x > max_x or min_y > max_y:
-        return None
-    if min_x == float('-inf') or max_x == float('inf') or min_y == float('-inf') or max_y == float('inf'):
+    if min_x >= max_x or min_y >= max_y:
         return None
     return (min_x, max_x, min_y, max_y)
 
@@ -54,7 +56,7 @@ def process_points(equations, points):
 
         for r in range(1, len(equations) + 1):
             for subset in combinations(equations, r):
-                rect = find_interesting_rectangle(subset)
+                rect = find_interesting_rectangle(subset, point)
                 if rect is not None and is_point_inside_rectangle(point, rect):
                     area = (rect[1] - rect[0]) * (rect[3] - rect[2])
                     if area < min_area:
